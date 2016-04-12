@@ -1,185 +1,121 @@
 'use strict';
 
-let numbers = document.querySelector("[data-selector='numbers-key']");
-let result = document.querySelector("[data-selector='calculator-value']");
+let numbers = document.querySelector('[data-selector="numbers-key"]');
+let result = document.querySelector('[data-selector="calculator-value"]');
 let fValue;
 let tValue;
-let operatorExpression;
+let operatorExpression = "";
 
 
 class Calculator{
-    constructor(options){
-        /*define variables*/
-        this._el = options.element;
-        this._centerPosition = options.centerPosition;
-        this._val = 0;
+  constructor(options){
 
+     /*define variables*/
+    this._el = options.element;
+    this._val = 0;
+
+       
+    /*Handle events*/
+     this.on('click', this._onDataNumberClick.bind(this));
+     this.on('click', this._onDataOperatorClick.bind(this));
+     this.on('click', this._onCalculateClick.bind(this));
+     this.on('click', this._onClearButtonClick.bind(this));
+     this.on('click', this._onUnarClick.bind(this));
+     this.on('click', this._onPercentClick.bind(this));   
+
+    }
+
+
+    on(eventName, handler) {
+      this._el.addEventListener(eventName, handler);
+    }
         
+   _onDataNumberClick(event) {
+      if (!event.target.hasAttribute('data-number')) return;
 
-        /*Handle events*/
-        if(this._centerPosition === true){
-        this.centerPosition();
-        }  
-
-        this._el.addEventListener('click', this._clickValueButtonEvent.bind(this));
-        this._el.addEventListener('click', this._clearValue.bind(this));
-        this._el.addEventListener('click', this._dotValue.bind(this));
-
-        this._el.addEventListener('click', this._clickOperatorEvent.bind(this));
-        this._el.addEventListener('click', this._equalEvent.bind(this));
-        this._el.addEventListener('click', this._unarEvent.bind(this));
-        this._el.addEventListener('click', this._percentEvent.bind(this));
+      this._handleNumbers();
     }
 
-
-    centerPosition(){
-        var calc = this._el;
-        var bodyWidth = document.documentElement.clientWidth;
-        var mid = bodyWidth/2 - calc.clientWidth/2;
-        calc.style.left = mid + "px";
-        calc.style.position = "absolute";
-    }
-
-
-
-    /*event define number*/
-    _clickValueButtonEvent(event){
-    let num = event.target.closest('[data-selector="num"]');
-   
-
-    if (!num) {
-      return;
-    }
-
-    if(result.innerHTML === "0"){
-          result.innerHTML = num.innerHTML; 
+    _handleNumbers(){
+      var num = event.target;
+        
+      if(result.innerHTML === "0"){
+        result.innerHTML = num.dataset.number; 
          
-    } else{
+        } else{
 
-         result.innerHTML += num.innerHTML; 
+          result.innerHTML += num.dataset.number; 
+        }
     }
 
-    let firstArgument = result;
-
+    _onDataOperatorClick(event) {
+        if (!event.target.hasAttribute('data-operator')) return;
+        
+        this._handleOperators()
     }
 
+    _handleOperators(){
+        fValue = result.innerHTML;
 
-    _clearValue(event){
-        let clear = event.target.closest('[data-selector="clear"]');
-          
-        if(!clear){
-            return;
+        operatorExpression = event.target.dataset.operator;
+        console.log(operatorExpression);
+        this._nullResult();
+
+       
+    }
+
+    _onCalculateClick(event){
+        var event = event.target
+           if (event.dataset.selector!=="equal") return;
+
+          this._onEqualResult();
+       
+    }
+
+    _onEqualResult(){
+        tValue = result.innerHTML;
+      
+        let operations = {
+         '+': (a, b) => +a + +b,
+         '-': (a, b) => +a - +b,
+         '/': (a, b) => +a / +b,
+         '*': (a, b) => +a * +b
         }
 
-        result.innerHTML = '0';
-        fValue += "";
-        tValue += "";
-        operatorExpression +="";
+        result.innerHTML = operations[operatorExpression](fValue, tValue)
+
+        this._clear();
     }
 
+
+    _onClearButtonClick(event){ 
+        if (event.target.dataset.selector!=="clear") return;
+       
+        this._clear();
+        this._nullResult();
+    }
 
 
     _clear(){
-        result.innerHTML = '0';
-         fValue += "";
+        fValue += "";
         tValue += "";
-        operatorExpression +="";
+        operatorExpression += "";
+    }
+
+    _nullResult(){
+        result.innerHTML = '0';
     }
 
 
-
-    _resultClear(){
-        fValue = "";
-        tValue = "";
-        operatorExpression ="";
+    _onUnarClick(event){
+        if (event.target.dataset.selector!=="unar") return;
+        result.innerHTML= -result.innerHTML;
     }
 
 
-
-     _dotValue(event){
-        let clear = event.target.closest('[data-selector="dot"]');
-          
-        if(!clear){
-            return;
-        }
-
-        result.innerHTML += ".";
-    }
-
-
-
-    _clickOperatorEvent(event){
-
-    let oper = event.target.closest('[data-selector="operator"]');
-  
-
-    if (!oper) {
-      return;
-    }
-
-   
-        fValue = result.innerHTML;
-        operatorExpression = oper.innerHTML;
-
-
-        // alert(fValue);
-        //  alert(this._val);
-        //             alert(operatorExpression);
- 
-    this._clear();
-     
-    }
-
-
-
-    _equalResult(){
-         tValue = result.innerHTML;
-        
-
-         if(operatorExpression ==="+"){
-                result.innerHTML = +fValue + +tValue;
-         } else if(operatorExpression ==="-"){
-                result.innerHTML = +fValue - +tValue;
-         } else if(operatorExpression ==="/"){
-                 result.innerHTML = +fValue / +tValue;
-         } else if(operatorExpression ==="*"){
-                 result.innerHTML = +fValue * +tValue;
-         }
-
-        this._resultClear();
-    }
-
-
-    _equalEvent(event){
-        let eq = event.target.closest("[data-selector='equal']");
-
-        if(!eq){
-            return;
-        }
-       
-        this._equalResult();
-    }
-
-
-
-    _unarEvent(event){
-         let unar = event.target.closest("[data-selector='unar']");
-
-         if(!unar){
-            return;
-         }
-         result.innerHTML= -result.innerHTML;
-    }
-
-
-
-    _percentEvent(event){
-         let percent = event.target.closest("[data-selector='percent']");
-
-         if(!percent){
-            return;
-         }
-         result.innerHTML = +result.innerHTML/100
+    _onPercentClick(event){
+        if (event.target.dataset.selector!=="percent") return;
+        result.innerHTML = +result.innerHTML/100
 
     }
 

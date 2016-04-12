@@ -5,8 +5,13 @@
     <title>title</title>
   <link rel="stylesheet" href="css/app.css">
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,400italic,700&subset=latin,cyrillic-ext' rel='stylesheet' type='text/css'>
-    <script src="js/calculator.js" defer></script>
-    <script src="js/app.js" defer></script>
+
+    
+   
+    
+     <script src="js/calculator.js" defer></script>
+      <script src="js/component.js" defer></script>
+      <script src="js/app.js" defer></script>
 </head>
 <body>
 
@@ -19,23 +24,23 @@
                <span data-selector="clear" class="number dot">A/C</span>
                <span data-selector="unar" class="number dot">+/-</span>
                <span data-selector="percent" class="number dot">%</span>
-              <span class="number" data-selector="num">7</span>
-              <span data-selector="num" class="number">8</span>
-              <span  data-selector="num" class="number">9</span>
-              <span data-selector="num" class="number">4</span>
-              <span data-selector="num" class="number">5</span>
-              <span data-selector="num" class="number">6</span>
-              <span data-selector="num" class="number">1</span>
-              <span data-selector="num" class="number">2</span>
-              <span data-selector="num" class="number">3</span>
-              <span data-selector="num" class="number big">0</span>
+              <span class="number"data-selector="num" data-number="7">7</span>
+              <span data-selector="num" class="number" data-number="8">8</span>
+              <span  data-selector="num" class="number" data-number="9">9</span>
+              <span data-selector="num" class="number" data-number="4">4</span>
+              <span data-selector="num" class="number" data-number="5">5</span>
+              <span data-selector="num" class="number" data-number="6">6</span>
+              <span data-selector="num" class="number" data-number="1">1</span>
+              <span data-selector="num" class="number" data-number="2">2</span>
+              <span data-selector="num" class="number" data-number="3">3</span>
+              <span data-selector="num" class="number big" data-number="0">0</span>
               <span data-selector="dot" class="number dot">,</span>
           </div>
           <div>
-              <span data-selector="operator" data-operator="" class="operator">/</span>
-              <span data-selector="operator" class="operator">*</span>
-              <span  data-selector="operator" class="operator">-</span>
-              <span  data-selector="operator" class="operator">+</span>
+              <span data-selector="operator" class="operator" data-operator='/'>/</span>
+              <span data-selector="operator" class="operator" data-operator='*'>*</span>
+              <span  data-selector="operator" class="operator" data-operator='-'>-</span>
+              <span  data-selector="operator" class="operator" data-operator='+'>+</span>
               <span  data-selector="equal" class="operator">=</span>
 
           </div>
