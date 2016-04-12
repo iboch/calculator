@@ -35,7 +35,7 @@ class Calculator{
 
       this._handleNumbers();
     }
-
+    /*Can i shift this method from this class to Component class? */
     _handleNumbers(){
       var num = event.target;
         
